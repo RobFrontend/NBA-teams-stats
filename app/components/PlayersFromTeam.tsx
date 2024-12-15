@@ -16,7 +16,7 @@ interface Players {
 export default async function PlayersFromTeam({ idTeam }: any) {
   const { response } = await getPlayersByTeamId(idTeam);
 
-  if (!response) return <h1>Loading</h1>;
+  if (!response) return <h1>Loading.</h1>;
   const players = response;
   if (!players) return <h1>No Players found</h1>;
 
