@@ -1,4 +1,4 @@
-// import PlayersFromTeam from "@/app/components/PlayersFromTeam";
+import PlayersFromTeam from "@/app/components/PlayersFromTeam";
 import { getTeamById, getTeams } from "@/app/lib/data-service";
 
 interface teamsLeagues {
@@ -87,7 +87,7 @@ export default async function Page({ params }: Params) {
           <img src={team.logo} alt={team.name} className="max-h-[250px]" />
           <h2>City: {team.city}</h2>
         </div>
-        {/* <PlayersFromTeam idTeam={team.id} /> */}
+        <PlayersFromTeam idTeam={team.id} />
       </div>
     );
   } catch (error) {
