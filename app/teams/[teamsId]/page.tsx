@@ -32,6 +32,10 @@ export async function generateMetadata({ params }: Params) {
 
 export async function generateStaticParams() {
   const { response } = await getTeams();
+  if (!response) {
+    console.error("getTeams response is empty or malformed");
+    return [];
+  }
 
   const teams: Teams[] = response
     ?.filter((res: Teams) => res.nbaFranchise === true)
