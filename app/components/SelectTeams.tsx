@@ -21,6 +21,8 @@ interface Teams {
 export default async function SelectTeams() {
   const data = await getTeams();
 
+  if (!data) return <p>No data</p>;
+
   const nbateams: Teams[] = data.response
     ?.filter((res: Teams) => res.nbaFranchise === true)
     ?.filter((res: Teams) => res.name !== "Home Team Stephen A");
