@@ -25,42 +25,73 @@ interface Params {
 }
 
 export async function generateMetadata({ params }: Params) {
-  const data = await getTeamById(params.teamsId);
-  const name = data.response[0].name;
-  return { title: `${name}` };
+  try {
+    const data = await getTeamById(params.teamsId);
+    if (!data || !data.response || data.response.length === 0) {
+      console.error(
+        "getTeamById returned an invalid response for",
+        params.teamsId
+      );
+      return { title: "Team Not Found" };
+    }
+    const name = data.response[0].name;
+    return { title: `${name}` };
+  } catch (error) {
+    console.error("Error in generateMetaData:", error);
+    return { title: "Error Loading Team" };
+  }
 }
 
 export async function generateStaticParams() {
-  const data = await getTeams();
+  try {
+    const data = await getTeams();
 
-  const teams: Teams[] = data.response
-    ?.filter((res: Teams) => res.nbaFranchise === true)
-    ?.filter((res: Teams) => res.name !== "Home Team Stephen A");
+    if (!data || !data.response) {
+      console.error("getTeams response is empty or malformed");
+      return [];
+    }
 
-  const ids = teams?.map((team: Teams) => ({
-    teamsId: String(team.id),
-  }));
+    const teams: Teams[] = data.response
+      ?.filter((res: Teams) => res.nbaFranchise === true)
+      ?.filter((res: Teams) => res.name !== "Home Team Stephen A");
 
-  return ids;
+    const ids = teams?.map((team: Teams) => ({
+      teamsId: String(team.id),
+    }));
+
+    return ids;
+  } catch (error) {
+    console.error("Error in generateStaticParams:", error);
+    return [];
+  }
 }
 
 export default async function Page({ params }: Params) {
-  const data = await getTeamById(params.teamsId);
+  try {
+    const data = await getTeamById(params.teamsId);
+    if (!data || !data.response || data.response.length === 0) {
+      console.error(
+        "getTeamById returned an invalid response for",
+        params.teamsId
+      );
+      return <h1>Team Not Found</h1>;
+    }
 
-  if (!data) return <h1>Loading...</h1>;
-  const team = data.response[0];
-  // const idTeam = team.id;
+    const team = data.response[0];
+    if (!team) return <h1>No team found</h1>;
 
-  if (!team) return <h1>No team found</h1>;
-
-  return (
-    <div>
-      <div className="p-12">
-        <h1>{team.name}</h1>
-        <img src={team.logo} alt={team.name} className="max-h-[250px]" />
-        <h2>City: {team.city}</h2>
+    return (
+      <div>
+        <div className="p-12">
+          <h1>{team.name}</h1>
+          <img src={team.logo} alt={team.name} className="max-h-[250px]" />
+          <h2>City: {team.city}</h2>
+        </div>
+        <PlayersFromTeam idTeam={team.id} />
       </div>
-      <PlayersFromTeam idTeam={team.id} />
-    </div>
-  );
+    );
+  } catch (error) {
+    console.error("Error rendering team page:", error);
+    return <h1>Error Loading Team</h1>;
+  }
 }
