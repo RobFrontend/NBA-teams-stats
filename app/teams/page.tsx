@@ -19,7 +19,7 @@ interface Teams {
 }
 
 export const metadata = {
-  title: "NBA Teams",
+  title: "Teams",
 };
 
 export default async function Page() {

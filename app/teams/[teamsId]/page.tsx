@@ -24,8 +24,9 @@ interface Params {
   };
 }
 
-export async function generateMetaData({ params }: Params) {
-  const { name } = await getTeamById(params.teamsId);
+export async function generateMetadata({ params }: Params) {
+  const { response } = await getTeamById(params.teamsId);
+  const name = response[0].name;
   return { title: `${name}` };
 }
 
