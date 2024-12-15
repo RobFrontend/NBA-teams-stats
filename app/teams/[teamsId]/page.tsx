@@ -1,4 +1,4 @@
-import PlayersFromTeam from "@/app/components/PlayersFromTeam";
+// import PlayersFromTeam from "@/app/components/PlayersFromTeam";
 import { getTeamById, getTeams } from "@/app/lib/data-service";
 
 interface teamsLeagues {
