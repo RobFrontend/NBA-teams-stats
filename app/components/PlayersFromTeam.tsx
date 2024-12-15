@@ -13,7 +13,7 @@ interface Players {
   leagues: any;
 }
 
-export default async function PlayersFromTeam({ idTeam }) {
+export default async function PlayersFromTeam({ idTeam }: any) {
   const { response } = await getPlayersByTeamId(idTeam);
 
   if (!response) return <h1>Loading</h1>;
