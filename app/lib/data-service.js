@@ -13,8 +13,8 @@ const options = {
 export const getTeams = async function () {
   try {
     const response = await fetch(url, options);
-    const teams = await response.json();
-    return teams;
+    const data = await response.json();
+    return data;
   } catch (error) {
     console.error(error);
   }
@@ -26,8 +26,8 @@ export const getTeamById = async function (id) {
       `https://api-nba-v1.p.rapidapi.com/teams?id=${id}`,
       options
     );
-    const team = await response.json();
-    return team;
+    const data = await response.json();
+    return data;
   } catch (error) {
     console.error(error);
   }
