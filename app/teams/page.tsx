@@ -23,9 +23,9 @@ export const metadata = {
 };
 
 export default async function Page() {
-  const { response } = await getTeams();
+  const data = await getTeams();
 
-  const nbateams: Teams[] = response
+  const nbateams: Teams[] = data.response
     ?.filter((res: Teams) => res.nbaFranchise === true)
     ?.filter((res: Teams) => res.name !== "Home Team Stephen A");
 

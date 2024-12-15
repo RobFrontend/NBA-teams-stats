@@ -25,19 +25,15 @@ interface Params {
 }
 
 export async function generateMetadata({ params }: Params) {
-  const { response } = await getTeamById(params.teamsId);
-  const name = response[0].name;
+  const data = await getTeamById(params.teamsId);
+  const name = data.response[0].name;
   return { title: `${name}` };
 }
 
 export async function generateStaticParams() {
-  const { response } = await getTeams();
-  if (!response) {
-    console.error("getTeams response is empty or malformed");
-    return [];
-  }
+  const data = await getTeams();
 
-  const teams: Teams[] = response
+  const teams: Teams[] = data.response
     ?.filter((res: Teams) => res.nbaFranchise === true)
     ?.filter((res: Teams) => res.name !== "Home Team Stephen A");
 
@@ -49,11 +45,11 @@ export async function generateStaticParams() {
 }
 
 export default async function Page({ params }: Params) {
-  const { response } = await getTeamById(params.teamsId);
+  const data = await getTeamById(params.teamsId);
 
-  if (!response) return <h1>Loading...</h1>;
-  const team = response[0];
-  const idTeam = team.id;
+  if (!data) return <h1>Loading...</h1>;
+  const team = data.response[0];
+  // const idTeam = team.id;
 
   if (!team) return <h1>No team found</h1>;
 
